@@ -1,4 +1,5 @@
-name: infra Terraform
+```yaml
+name: EKS Terraform Infrastructure
 
 on:
   workflow_dispatch:
@@ -33,22 +34,39 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+
+      # ============================================================
+      # VERIFY AWS ACCOUNT
+      # ============================================================
       - name: Verify AWS Identity
         run: |
           aws sts get-caller-identity
 
 
       # ============================================================
-      # TERRAFORM SETUP
+      # SETUP TERRAFORM
       # ============================================================
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+
+      # ============================================================
+      # TERRAFORM VERSION
+      # ============================================================
       - name: Terraform Version
         run: |
           terraform version
+
+
+      # ============================================================
+      # TERRAFORM FORMAT CHECK
+      # ============================================================
+      - name: Terraform Format Check
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: |
+          terraform fmt -check -recursive
 
 
       # ============================================================
@@ -94,3 +112,4 @@ jobs:
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: |
           terraform output
+```
