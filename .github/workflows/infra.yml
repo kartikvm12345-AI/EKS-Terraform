@@ -1,4 +1,4 @@
-```yaml
+yaml
 name: EKS Terraform Infrastructure
 
 on:
@@ -112,4 +112,4 @@ jobs:
         working-directory: ${{ env.TF_WORKING_DIR }}
         run: |
           terraform output
-```
+
